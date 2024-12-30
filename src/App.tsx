@@ -60,36 +60,61 @@ export default function BarcodeGenerator() {
         });
       });
     } else {
-      return new Promise<string>((resolve) => {
-        const canvas = document.createElement('canvas');
-        JsBarcode(canvas, code, { format: barcodeFormat });
-        resolve(canvas.toDataURL('image/png'));
+      return new Promise<string>((resolve, reject) => {
+        try {
+          const canvas = document.createElement('canvas');
+          JsBarcode(canvas, code, { format: barcodeFormat });
+          resolve(canvas.toDataURL('image/png'));
+        } catch (error) {
+          reject(error);
+        }
       });
     }
   };
 
   const handleGenerate = async () => {
-    const base64 = await generateBarcode(input, barcodeType);
-    setGeneratedCodes([base64]);
+    try {
+      if (!input.trim()) {
+        alert('Please enter a valid input');
+        return;
+      }
+      const base64 = await generateBarcode(input, barcodeType);
+      setGeneratedCodes([base64]);
+    } catch (error) {
+      console.error('Error generating barcode:', error);
+      alert('Failed to generate barcode. Please check your input and try again.');
+    }
   }
 
   const handleBulkGenerate = async () => {
-    const codes = bulkInput.split(',').map(code => code.trim())
-    const generatedBarcodes = await Promise.all(
-      codes.map(async (code) => {
-        const type = detectBarcodeType(code)
-        return generateBarcode(code, type)
-      })
-    )
-    setGeneratedCodes(generatedBarcodes)
-    setShowBulkDialog(false)
+    const codes = bulkInput.split(',').map(code => code.trim()).filter(code => code !== '');
+    if (codes.length === 0) {
+      alert('Please enter valid codes separated by commas');
+      return;
+    }
+    try {
+      const generatedBarcodes = await Promise.all(
+        codes.map(async (code) => {
+          const type = detectBarcodeType(code);
+          return generateBarcode(code, type);
+        })
+      );
+      setGeneratedCodes(generatedBarcodes);
+      setShowBulkDialog(false);
+    } catch (error) {
+      console.error('Error generating barcodes:', error);
+      alert('Failed to generate one or more barcodes. Please check your input and try again.');
+    }
   }
 
   const downloadBarcode = (index: number) => {
-    const link = document.createElement('a')
-    link.href = generatedCodes[index]
-    link.download = `barcode-${Date.now()}.png`
-    link.click()
+    const link = document.createElement('a');
+    const code = generatedCodes[index];
+    const isQR = code.startsWith('data:image/svg+xml');
+    const fileExtension = isQR ? 'svg' : 'png';
+    link.href = code;
+    link.download = `Barcode_${Date.now()}.${fileExtension}`;
+    link.click();
   }
 
   const printBarcodes = () => {
@@ -253,7 +278,7 @@ export default function BarcodeGenerator() {
                   onClick={() => downloadBarcode(index)}
                   className="mt-2 px-3 py-1 bg-emerald-600 text-white text-sm rounded-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                 >
-                  Download
+                  Baixar
                 </button>
               </div>
             ))}
