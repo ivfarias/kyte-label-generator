@@ -272,14 +272,14 @@ export default function BarcodeGenerator() {
       {showBulkDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-medium mb-2">Gerador de etiquetas em massa</h3>
+            <h3 className="text-lg font-medium mb-2 text-gray-600">Gerador de etiquetas em massa</h3>
             <p className="text-gray-600 mb-4">Escreva ou cole seus códigos de barra separados por vírgula.</p>
             <textarea
               value={bulkInput}
               onChange={(e) => setBulkInput(e.target.value)}
               placeholder="4221735075026,4637243993033,8227608335903,4180168059921, etc..."
               rows={5}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 bg-[#F7F7F8] mb-4 text-gray-700"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 text-gray-700 bg-[#F7F7F8] mb-4"
             />
             <div className="flex justify-end space-x-2">
               <button
