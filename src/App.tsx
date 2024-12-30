@@ -147,7 +147,7 @@ export default function BarcodeGenerator() {
           <img className="size-10 mb-4" src="/logo_green.svg" alt="Logo" />
         </div>
         <h2 className="text-3xl font-bold text-gray-700 mb-2">Gerador de Códigos de Barras e Etiquetas</h2>
-        <p className="text-gray-500 text-sm mb-6">Preencha as informações abaixo para criar uma etique. Caso deseje criar várias, aperte o botão "Gerar vários""</p>
+        <p className="text-gray-500 text-sm mb-6">⚠ Preencha as informações abaixo para criar uma etiqueta. Caso deseje criar várias, aperte o botão "Gerar vários"</p>
         <div className="space-y-4">
           <div>
             <label htmlFor="input" className="block text-base font-medium text-gray-700 mb-2 justify-self-start">Escreva o código do seu produto aqui</label>
@@ -279,7 +279,7 @@ export default function BarcodeGenerator() {
               onChange={(e) => setBulkInput(e.target.value)}
               placeholder="4221735075026,4637243993033,8227608335903,4180168059921, etc..."
               rows={5}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 bg-[#F7F7F8] mb-4"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 bg-[#F7F7F8] mb-4 text-gray-700"
             />
             <div className="flex justify-end space-x-2">
               <button
