@@ -14,6 +14,8 @@ const paperTypes = [
   { name: 'Personalizado', width: '', height: '', columns: 1, rows: 1 },
 ]
 
+const barcodeTypes = ['CODE128', 'EAN13', 'UPC', 'EAN8', 'QR'];
+
 export default function BarcodeGenerator() {
   const [input, setInput] = useState('')
   const [barcodeType, setBarcodeType] = useState('CODE128')
@@ -186,14 +188,17 @@ export default function BarcodeGenerator() {
             />
           </div>
           <div>
-            <label htmlFor="barcodeType" className="block text-base font-medium text-gray-700 mb-2 justify-self-start">Confira o tipo de código detectado ou escolha uma opção</label>
-            <input
+            <label htmlFor="barcodeType" className="block text-base font-medium text-gray-700 mb-2 justify-self-start">Selecione o tipo de código de barras</label>
+            <select
               id="barcodeType"
-              type="text"
               value={barcodeType}
-              readOnly
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-700"
-            />
+              onChange={(e) => setBarcodeType(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 bg-[#F7F7F8] text-gray-700"
+            >
+              {barcodeTypes.map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
           </div>
           <div className="flex space-x-2">
             <button
@@ -295,27 +300,25 @@ export default function BarcodeGenerator() {
         </button>
       </div>
       {showBulkDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-medium mb-2 text-gray-600">Gerador de etiquetas em massa</h3>
-            <p className="text-gray-600 mb-4">Escreva ou cole seus códigos de barra separados por vírgula.</p>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-96">
+            <h3 className="text-lg font-semibold mb-4">Gerar vários códigos de barras</h3>
             <textarea
               value={bulkInput}
               onChange={(e) => setBulkInput(e.target.value)}
-              placeholder="4221735075026,4637243993033,8227608335903,4180168059921, etc..."
-              rows={5}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 text-gray-700 bg-[#F7F7F8] mb-4"
+              placeholder="Digite os códigos separados por vírgulas. Por exemplo: 4221735075026,4637243993033,8227608335903, etc..."
+              className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 bg-[#F7F7F8] text-gray-700 mb-4"
             />
             <div className="flex justify-end space-x-2">
               <button
                 onClick={() => setShowBulkDialog(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleBulkGenerate}
-                className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                className="px-4 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
               >
                 Gerar
               </button>
@@ -324,6 +327,6 @@ export default function BarcodeGenerator() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
