@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'; import JsBarcode from 'jsbarcode'
+import { useState, useEffect } from 'react';
+import JsBarcode from 'jsbarcode'
 import { QRCodeSVG } from 'qrcode.react'
 import './App.css';
 import ReactDOM from 'react-dom';
 
-const barcodeTypes = ['CODE128', 'EAN13', 'EAN8', 'UPC', 'QR', 'DataMatrix']
 const paperTypes = [
   { name: 'A4 65 Etiquetas (38.1 x 21.2 mm)', width: '1.5in', height: '0.83in', columns: 3, rows: 11 },
   { name: 'A4 21 Etiquetas (63.5 x 38.1 mm)', width: '2.5in', height: '1.5in', columns: 3, rows: 7 },
@@ -94,56 +94,58 @@ export default function BarcodeGenerator() {
 
   const printBarcodes = () => {
     const printWindow = window.open('', '_blank')
-    printWindow!.document.write(`
-      <html>
-        <head>
-          <title>Imprimir códigos de barras e etiquetas</title>
-          <style>
-            body { margin: 0; padding: 0; }
-            .label-container {
-              display: grid;
-              grid-template-columns: repeat(${paperType.columns}, 1fr);
-              grid-gap: 0;
-            }
-            .label {
-              width: ${paperType.width};
-              height: ${paperType.height};
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              page-break-inside: avoid;
-            }
-            .label img {
-              max-width: 100%;
-              max-height: 100%;
-            }
-            @media print {
-              @page { margin: 0; }
-              body { margin: 0.5cm; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="label-container">
-            ${generatedCodes.map(code => `
-              <div class="label">
-                <img src="${code}" alt="Código de Barras">
-              </div>
-            `).join('')}
-          </div>
-        </body>
-      </html>
-    `)
-    printWindow!.document.close()
-    printWindow!.print()
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Imprimir códigos de barras e etiquetas</title>
+            <style>
+              body { margin: 0; padding: 0; }
+              .label-container {
+                display: grid;
+                grid-template-columns: repeat(${paperType.columns}, 1fr);
+                grid-gap: 0;
+              }
+              .label {
+                width: ${paperType.width};
+                height: ${paperType.height};
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                page-break-inside: avoid;
+              }
+              .label img {
+                max-width: 100%;
+                max-height: 100%;
+              }
+              @media print {
+                @page { margin: 0; }
+                body { margin: 0.5cm; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="label-container">
+              ${generatedCodes.map(code => `
+                <div class="label">
+                  <img src="${code}" alt="Código de Barras">
+                </div>
+              `).join('')}
+            </div>
+          </body>
+        </html>
+      `)
+      printWindow.document.close()
+      printWindow.print()
+    }
   }
 
   return (
     <div className="w-full max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
       <div className="p-6">
         <div className="flex justify-center items-center h-full">
-          <img className="size-10 mb-4" src="/logo_green.svg" />
-          </div>
+          <img className="size-10 mb-4" src="/logo_green.svg" alt="Logo" />
+        </div>
         <h2 className="text-3xl font-bold text-gray-700 mb-2">Gerador de Códigos de Barras e Etiquetas</h2>
         <p className="text-gray-500 text-sm mb-6">Preencha as informações abaixo para criar uma etique. Caso deseje criar várias, aperte o botão "Gerar vários""</p>
         <div className="space-y-4">
