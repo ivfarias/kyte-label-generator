@@ -300,9 +300,9 @@ export default function BarcodeGenerator() {
         </button>
       </div>
       {showBulkDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-xl w-96">
-            <h3 className="text-lg font-semibold mb-4">Gerar vários códigos de barras</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-700">Gerar vários códigos de barras</h3>
             <textarea
               value={bulkInput}
               onChange={(e) => setBulkInput(e.target.value)}
